@@ -18,6 +18,7 @@ git init
 # ook voor files die al een keer zijn gecommit.
 git add *.md
 git add *.sh
+git add *.py
 
 # set de identity
 git config --global user.email "cx1964@mail.com"
