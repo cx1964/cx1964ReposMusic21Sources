@@ -3,7 +3,8 @@
 #
 
 # Voeg een remote repository toe
-git remote add origin https://github.com/cx1964/cx1964ReposMusic21Sources.git
+# Alleen gebruiken de eerste keer toevoegen van file(s)
+# git remote add origin https://github.com/cx1964/cx1964ReposMusic21Sources.git
 
 # Schrijf de  wijzgingen van local repository naar master branch van de remote repository
 # Gebruik username cx1964@gmail.com
