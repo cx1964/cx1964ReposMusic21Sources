@@ -14,5 +14,7 @@
 |BWV_974_Adagio_Marcello_v000c.mscz                                      | Voorbeeld Musescore file in native format                                                               |
 |BWV_974_Adagio_Marcello_v000c.musicxml                                  | Voorbeeld Musescore file in uncompressed musicxml format; Input voor read_musescore_file_music21_py3.py |
 |chordify_musescore_bvw1048_music21_py3.py                               | Voorbeeld mbt bladmuziek BWV1048 in MuseScore met losse stemmen omzetten naar accoorden obv music21     |
+|                                                                        | en een voorbeeld van een harmonische analyse van de akkoorden en benomen van de soort akkoorden mbv     |
+|                                                                        | romeinse cijfers.                                                                                       |
 |BWV1048_Brandenburg_Concerto_No_3_in_G_Major_in_parts_orgineel.mscz     | Bronbestand bladmuziek BWV1048 Musescore file in native format                                          |
 |BWV1048_Brandenburg_Concerto_No_3_in_G_Major_in_parts_orgineel.musicxml | Input file in musicxml format voor chordify_musescore_bvw1048_music21_py3.py                            |
