@@ -1,5 +1,5 @@
-# filenaam: readme.txt
-## functie: Dit zijn python3 sources van music3 voorbeelden
+# filenaam: readme.md
+## functie: Dit zijn python3 sources van music21 voorbeelden
 
 **Documentatie**
 1. music21: [https://web.mit.edu/music21/doc/usersGuide/index.html](https://web.mit.edu/music21/doc/usersGuide/index.html)
