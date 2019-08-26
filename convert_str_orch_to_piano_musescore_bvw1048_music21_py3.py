@@ -9,7 +9,7 @@ import music21 as m
 
 scorePath = "~/Documents/sources/python/python3/python3_music21"
 # Export de MuseScore File in musicxml (uncompressed music mxl format)
-museScoreFile = "BWV1048_Brandenburg_Concerto_No_3_in_G_Major_in_parts_orgineel_1st_mov.musicxml"
+museScoreFile = "BWV1048_Brandenburg_Concerto_No_3_in_G_Major_in_parts_orgineel_1st_mov.2.musicxml"
 
 
 # Zie: https://web.mit.edu/music21/doc/usersGuide/usersGuide_24_environment.html#usersguide-24-environment
@@ -35,13 +35,21 @@ violin2 = parts[1]
 violin3 = parts[2]
 
 # Violas
+vs = m.stream.Stream()
 alto = m.clef.AltoClef()
 treble = m.clef.TrebleClef()
+#vs.insert(treble)
+#viola1 = m.stream.Part(parts[3])
+#viola1.remove(alto)
+#vs.insert(viola1)
+
 viola1 = parts[3]
+#help (viola1)
 viola2 = parts[4]
 viola3 = parts[5]
 # viola1.show('text')
-# viola1.show()
+#vs.measures(0,4).show()
+#viola1.show()
 
 # The Violoncelli
 violoncello1 = parts[6]
@@ -66,7 +74,7 @@ rh.append(viola3)
 # print(rh.isWellFormedNotation())
 # rh is well formed
 # rh.show('text')
-#rh.show()
+rh.show()
 
 # Create left hand
 lh = m.stream.Stream()
