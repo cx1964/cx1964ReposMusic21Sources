@@ -1,13 +1,13 @@
 # Filenaam: convert_str_orch_to_piano_musescore_bvw1048_music21_py3.py
-# Functie : Voorbeeld mbt bladmuziek in MuseScore formaat met losse stemmen
-#           obv (BWV1048 3e Brandeburger Concert 1e deel)
-#           omvormen tot bladmuziek voor piano
+# Functie : Sample of how to convert sheetmusic in MuseScore format with seperate voices
+#           using BWV1048 3rd Brandeburger Concert 1st movement,
+#           to sheetmusic for piano
 #
 # 
 
 import music21 as m
 
-padBladmuziek = "~/Documents/sources/python/python3/python3_music21"
+scorePath = "~/Documents/sources/python/python3/python3_music21"
 # Export de MuseScore File in musicxml (uncompressed music mxl format)
 museScoreFile = "BWV1048_Brandenburg_Concerto_No_3_in_G_Major_in_parts_orgineel_1st_mov.musicxml"
 
@@ -22,50 +22,58 @@ env['lilypondPath'] = '/usr/bin/lilypond'
 env['musescoreDirectPNGPath'] = '/usr/bin/musescore3'
 env['musicxmlPath'] = '/usr/bin/musescore3'
 
-curr_stream = m.converter.parse(padBladmuziek+'/'+museScoreFile, format='musicxml')
+curr_stream = m.converter.parse(scorePath+'/'+museScoreFile, format='musicxml')
 # curr_stream.show()
 parts = curr_stream.getElementsByClass(m.stream.Part)
 
-aantalStemmen = len(parts)
-print ("aantalStemmen: ", str(aantalStemmen))
-#left_hand = parts[0]
-#right_hand = parts[1]
+voiceCount = len(parts)
+print ("voiceCount: ", str(voiceCount))
 
-# De violen
-viool1 = parts[0]
-viool2 = parts[1]
-viool3 = parts[2]
+# Violins
+violin1 = parts[0]
+violin2 = parts[1]
+violin3 = parts[2]
 
-# De altviolen
-altviool1 = parts[3]
-altviool2 = parts[4]
-altviool3 = parts[5]
+# Violas
+alto = m.clef.AltoClef()
+treble = m.clef.TrebleClef()
+viola1 = parts[3]
+viola2 = parts[4]
+viola3 = parts[5]
+# viola1.show('text')
+# viola1.show()
 
-# De Celli
-cello1 = parts[6]
-cello2 = parts[7]
-cello3 = parts[8]
+# The Violoncelli
+violoncello1 = parts[6]
+violoncello2 = parts[7]
+violoncello3 = parts[8]
 
-# De Contrabas
-contrabas1 = parts[9]
+# The Contrabass
+contrabass1 = parts[9]
 #print(contrabas1.partName)
 #contrabas1.show()
 
-# Plaats Viool I t/m III en altviolen I t/m III op balk voor de g-sleutel tbv rechter hand
+# Create right hand
 rh = m.stream.Stream()
-rh.append(viool1)
-rh.append(viool2)
-rh.append(viool3)
+rh.append(violin1)
+rh.append(violin2)
+rh.append(violin3)
 
-rh.append(altviool1)
-rh.append(altviool2)
-rh.append(altviool3)
+rh.append(viola1)
+rh.append(viola2)
+rh.append(viola3)
+# Check of Stream is well formed
+# print(rh.isWellFormedNotation())
+# rh is well formed
+# rh.show('text')
 #rh.show()
-# Tot hier werkt het
 
-# probleem: chordify zorgt voor malformed part object.
-rh_akkoorden = rh.chordify()
-# rh_akkoorden.show()
+# Create left hand
+lh = m.stream.Stream()
+lh.append(violoncello1)
+lh.append(violoncello2)
+lh.append(violoncello3)
 
-# Plaats Violoncello I t/m III + Contrabas op balk voor de f-sleutel tbv linker hand
-
+lh.append(contrabass1)
+#lh.show()
+# It works until here
