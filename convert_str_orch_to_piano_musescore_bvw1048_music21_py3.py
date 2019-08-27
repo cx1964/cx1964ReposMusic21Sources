@@ -9,7 +9,7 @@ import music21 as m
 
 scorePath = "~/Documents/sources/python/python3/python3_music21"
 # Export de MuseScore File in musicxml (uncompressed music mxl format)
-museScoreFile = "BWV1048_Brandenburg_Concerto_No_3_in_G_Major_in_parts_orgineel_1st_mov.2.musicxml"
+museScoreFile = "BWV1048_Brandenburg_Concerto_No_3_in_G_Major_in_parts_orgineel_1st_mov.musicxml"
 
 
 # Zie: https://web.mit.edu/music21/doc/usersGuide/usersGuide_24_environment.html#usersguide-24-environment
@@ -29,27 +29,20 @@ parts = curr_stream.getElementsByClass(m.stream.Part)
 voiceCount = len(parts)
 print ("voiceCount: ", str(voiceCount))
 
+s = m.stream.Score()
+rh = m.stream.Part()
+lh = m.stream.Part()
+#help(rh)
+
 # Violins
 violin1 = parts[0]
 violin2 = parts[1]
+print ("stream.Part violin1: wellformed " + str(violin1.isWellFormedNotation()) + " type: "+str(type(violin1)))
 violin3 = parts[2]
-
 # Violas
-vs = m.stream.Stream()
-alto = m.clef.AltoClef()
-treble = m.clef.TrebleClef()
-#vs.insert(treble)
-#viola1 = m.stream.Part(parts[3])
-#viola1.remove(alto)
-#vs.insert(viola1)
-
 viola1 = parts[3]
-#help (viola1)
 viola2 = parts[4]
 viola3 = parts[5]
-# viola1.show('text')
-#vs.measures(0,4).show()
-#viola1.show()
 
 # The Violoncelli
 violoncello1 = parts[6]
@@ -58,30 +51,35 @@ violoncello3 = parts[8]
 
 # The Contrabass
 contrabass1 = parts[9]
-#print(contrabas1.partName)
-#contrabas1.show()
+
 
 # Create right hand
-rh = m.stream.Stream()
-rh.append(violin1)
-rh.append(violin2)
-rh.append(violin3)
+rh.insert(0,violin1)
+print("rh.insert: wellformed "+str(rh.isWellFormedNotation()))
+# Why is the stream rh notWellFormed after the insert ?
+rh.append([violin2,violin3, viola1, viola2, viola3])
+print("rh.append:  wellformed "+str(rh.isWellFormedNotation()))
+print ("Why not wellformed?")
+#rh.append(violin3)
 
-rh.append(viola1)
-rh.append(viola2)
-rh.append(viola3)
-# Check of Stream is well formed
-# print(rh.isWellFormedNotation())
-# rh is well formed
-# rh.show('text')
-rh.show()
+#rh.append(viola1)
+#rh.append(viola2)
+#rh.append(viola3)
+
 
 # Create left hand
-lh = m.stream.Stream()
-lh.append(violoncello1)
+lh.insert(0,violoncello1)
 lh.append(violoncello2)
 lh.append(violoncello3)
 
 lh.append(contrabass1)
 #lh.show()
 # It works until here
+
+s.insert(0,rh)
+s.insert(0,lh)
+
+# See: http://web.mit.edu/music21/doc/moduleReference/moduleLayout.html#staffgroup
+staffGroup1 = m.layout.StaffGroup([rh, lh], name='Piano', abbreviation='Pno.', symbol='brace')
+s.insert(0, staffGroup1)
+#s.show()
