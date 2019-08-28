@@ -32,22 +32,42 @@ voiceCount = len(parts)
 print ("voiceCount: ", str(voiceCount))
 
 s = m.stream.Score()
-#rh = m.stream.Part() -- gebruik Stream ivm probleem van niet kunnen veranderen van de cleff
-rh = m.stream.Stream()
-#lh = m.stream.Part() -- gebruik Stream ivm probleem van niet kunnen veranderen van de cleff
-lh = m.stream.Stream() 
+rh = m.stream.Part() 
+lh = m.stream.Part()
 #help(rh)
 
 # Violins
 violin1 = parts[0]
 violin2 = parts[1]
-# print ("stream.Part violin1: wellformed " + str(violin1.isWellFormedNotation()) + " type: "+str(type(violin1)))
 violin3 = parts[2]
 
 # Violas
 viola1 = parts[3]
 viola2 = parts[4]
 viola3 = parts[5]
+
+# parts[x].measure(1) contains info about measure1 of part[x]
+# parts[3].measure(1).timeSignature
+# parts[3].measure(1).clef
+
+# Change Alto clefs of violas into TrebleClef
+#print ("before parts[3].measure(1).clef: "+ str(parts[3].measure(1).clef))
+#parts[3].write(outputFormat, scorePath+"/alto."+outputFormat)
+viola1.measure(1).clef = m.clef.TrebleClef()
+viola2.measure(1).clef = m.clef.TrebleClef()
+viola3.measure(1).clef = m.clef.TrebleClef()
+# parts[3].write(outputFormat, scorePath+"/treble."+outputFormat)
+
+# check number of measures viola1 util 3
+measureCountViola1 = len (m.stream.iterator.RecursiveIterator(viola1, streamsOnly=True))
+print("Aantal measures viola1: "+ str(measureCountViola1))
+# check all clefs
+#for i in list(range(measureCountViola1)):
+#    print("cleff("+str(i+1)+"): "+str(viola3.measure(i+1).clef) )
+measureCountViola2 = len (m.stream.iterator.RecursiveIterator(viola2, streamsOnly=True))
+print("Aantal measures viola2: "+ str(measureCountViola2))
+measureCountViola3 = len (m.stream.iterator.RecursiveIterator(viola3, streamsOnly=True))
+print("Aantal measures viola3: "+ str(measureCountViola3))
 
 
 # The Violoncelli
@@ -58,28 +78,24 @@ violoncello3 = parts[8]
 # The Contrabass
 contrabass1 = parts[9]
 
+measureCountContrabass1 = len (m.stream.iterator.RecursiveIterator(contrabass1, streamsOnly=True))
+print("Aantal measures contrabass1: "+ str(measureCountContrabass1))
+
+# Change octava8 Bassclefs of contrabass into bassClef
+contrabass1.measure(1).clef = m.clef.BassClef()
 
 # Create right hand
-# ivm wijzigen van de cleff van de viola eerst de violas toevoegen
-rh.insert(0, m.clef.TrebleClef())
+rh.append(violin1)
+rh.append(violin2)
+rh.append(violin3)
 rh.append(viola1)
-#print("rh.insert: wellformed "+str(rh.isWellFormedNotation()) + " type: "+ str(type(violin1)))
-#rh.measures(1, 1).show('text')
-#print ("---")
-#rh.show('text')
-# Why is the stream rh notWellFormed after the insert ?
-#rh.append([viola2, viola3, violin1, violin2, violin3])
-#print("rh.append:  wellformed "+str(rh.isWellFormedNotation()))
-#print ("Why not wellformed?")
+rh.append(viola2)
+rh.append(viola3)
 #rh.show()
-rh.write(outputFormat, outputFile)
-print("Geen wijziging AltoCleff naar trebleCleff")
+#rh.write(outputFormat, outputFile)
 
 # Create left hand
-# ivm wijzigen van de cleff van de contrabass eerst de contrabas toevoegen
-rh.insert(0, m.clef.BassClef())
-lh.append(contrabass1)
-#lh.append([violoncello1, violoncello2, violoncello3])
+lh.append([violoncello1, violoncello2, violoncello3, contrabass1])
 #lh.show()
 
 
@@ -91,6 +107,9 @@ staffGroup1 = m.layout.StaffGroup([rh, lh], name='Piano', abbreviation='Pno.', s
 s.insert(0, staffGroup1)
 #s.write(outputFormat, outputFile)
 #s.show()
+
+print("Clefs of violas and contrabass are properly set to the wanted type.")
+print("How can you append all parts of RH and all parts of LH?")
 
 # The problem
 #print("There is no problem if you use one append for the right and one append for the right hand.")
