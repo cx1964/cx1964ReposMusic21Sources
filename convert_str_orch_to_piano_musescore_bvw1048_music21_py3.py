@@ -4,7 +4,6 @@
 #           to sheetmusic for piano
 #
 
-
 import music21 as m
 
 scorePath = "~/Documents/sources/python/python3/python3_music21"
@@ -12,7 +11,7 @@ scorePath = "~/Documents/sources/python/python3/python3_music21"
 museScoreFile = "BWV1048_Brandenburg_Concerto_No_3_in_G_Major_in_parts_orgineel_1st_mov.musicxml"
 
 outputFormat = 'musicxml'
-outputFile = scorePath+'/output.'+outputFormat
+outputFileDFLT = scorePath+'/output.'+outputFormat
 
 # See: https://web.mit.edu/music21/doc/usersGuide/usersGuide_24_environment.html#usersguide-24-environment
 env = m.environment.UserSettings()
@@ -30,6 +29,15 @@ curr_stream = m.converter.parse(scorePath+'/'+museScoreFile, format='musicxml')
 parts = curr_stream.getElementsByClass(m.stream.Part)
 voiceCount = len(parts)
 print ("voiceCount: ", str(voiceCount))
+
+# change clefs of violas
+curr_stream.getElementsByClass(m.stream.Part)[3].measure(1).clef = m.clef.TrebleClef()
+curr_stream.getElementsByClass(m.stream.Part)[4].measure(1).clef = m.clef.TrebleClef()
+curr_stream.getElementsByClass(m.stream.Part)[5].measure(1).clef = m.clef.TrebleClef()
+# change clefs of contrabas
+curr_stream.getElementsByClass(m.stream.Part)[9].measure(1).clef = m.clef.BassClef()
+#curr_stream.show()
+
 
 s = m.stream.Score()
 rh = m.stream.Part() 
@@ -57,6 +65,15 @@ viola1.measure(1).clef = m.clef.TrebleClef()
 viola2.measure(1).clef = m.clef.TrebleClef()
 viola3.measure(1).clef = m.clef.TrebleClef()
 # parts[3].write(outputFormat, scorePath+"/treble."+outputFormat)
+# flatten
+v1  = violin1.flat
+print("type(v1): " + str(type(v1)))
+v2  = violin2.flat
+v3  = violin3.flat
+va1 = viola1.flat
+print("type(va1): " + str(type(va1)))
+va2 = viola2.flat
+va3 = viola3.flat
 
 # check number of measures viola1 util 3
 measureCountViola1 = len (m.stream.iterator.RecursiveIterator(viola1, streamsOnly=True))
@@ -85,13 +102,22 @@ print("Aantal measures contrabass1: "+ str(measureCountContrabass1))
 contrabass1.measure(1).clef = m.clef.BassClef()
 
 # Create right hand
-rh.append(violin1)
-rh.append(violin2)
-rh.append(violin3)
-rh.append(viola1)
-rh.append(viola2)
-rh.append(viola3)
+print("v1 isFlat:"+str(v1.isFlat))
+rh.append(v1)
+print("v2 isFlat:"+str(v2.isFlat))
+rh.append(v2)
+print("v3 isFlat:"+str(v3.isFlat))
+rh.append(v3)
+print("va1 isFlat:"+str(va1.isFlat))
+rh.append(va1)
+print("va2 isFlat:"+str(va2.isFlat))
+rh.append(va2)
+print("va3 isFlat:"+str(va3.isFlat))
+rh.append(va3)
+print("rh isFlat:"+str(rh.isFlat))
+# In input file measure 13 is differtent for violin1, violin2 an violin3
 #rh.show()
+outputFile = scorePath + "/rh."+outputFormat
 #rh.write(outputFormat, outputFile)
 
 # Create left hand
@@ -100,13 +126,17 @@ lh.append([violoncello1, violoncello2, violoncello3, contrabass1])
 
 
 s.insert(0,rh)
+print("type(s): "+str(type(s)))
 s.insert(0,lh)
+print("type(s): "+str(type(s)))
 
 # See: http://web.mit.edu/music21/doc/moduleReference/moduleLayout.html#staffgroup
 staffGroup1 = m.layout.StaffGroup([rh, lh], name='Piano', abbreviation='Pno.', symbol='brace')
 s.insert(0, staffGroup1)
+#outputFile = scorePath + "/lh."+outputFormat
 #s.write(outputFormat, outputFile)
 #s.show()
+print("type(s): "+str(type(s)))
 
 print("Clefs of violas and contrabass are properly set to the wanted type.")
 print("How can you append all parts of RH and all parts of LH?")
