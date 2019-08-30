@@ -1,14 +1,19 @@
-# Filenaam: convert_str_orch_to_piano_musescore_bvw1048_music21_py3.py
-# Functie : Sample of how to convert sheetmusic in MuseScore format with seperate voices
+# Filename: convert_str_orch_to_piano_musescore_bvw1048_music21_py3.py
+# Function: Sample of how to convert sheetmusic in MuseScore format with seperate voices
 #           using BWV1048 3rd Brandeburger Concert 1st movement,
 #           to sheetmusic for piano
-#
+# Comment: For Music21 documentation see: https://web.mit.edu/music21/doc/index.html
+#          For samples see https://github.com/cuthbertLab/music21-tools
 
 import music21 as m
 
 scorePath = "~/Documents/sources/python/python3/python3_music21"
 # Export de MuseScore File in musicxml (uncompressed music mxl format)
 museScoreFile = "BWV1048_Brandenburg_Concerto_No_3_in_G_Major_in_parts_orgineel_1st_mov.musicxml"
+
+# Set Meta Data
+composer = 'J.S. Bach (1685 - 1750'
+title = museScoreFile
 
 outputFormat = 'musicxml'
 outputFileDFLT = scorePath+'/output.'+outputFormat
@@ -100,6 +105,13 @@ rh.append(viola1)
 rh.append(viola2)
 rh.append(viola3)
 rh=rh.chordify()
+# reset PartName
+rh.partName = ""
+rh.partAbbreviation = ""
+# Why is this not set?
+rh.instrumentName = "Piano"
+rh.midiProgram="Piano"
+
 # Inputfile measure 12 and 13 ares differtent for violin1, violin2 an violin3
 #rh.show()
 outputFile = scorePath + "/rh."+outputFormat
@@ -111,12 +123,19 @@ lh.append(violoncello2)
 lh.append(violoncello3)
 lh.append(contrabass1)
 lh=lh.chordify()
+# reset PartName
+lh.partName = ""
+lh.partAbbreviation = ""
+# Why is this not set?
+lh.insert(m.instrument.Piano())
+
 #lh.show()
 outputFile = scorePath + "/lh."+outputFormat
 #lh.write(outputFormat, outputFile)
 
 s.insert(0,rh)
 #print("type(s): "+str(type(s)))
+
 s.insert(0,lh)
 #print("type(s): "+str(type(s)))
 
@@ -125,6 +144,9 @@ staffGroup1 = m.layout.StaffGroup([rh, lh], name='Piano', abbreviation='Pno.', s
 s.insert(0, staffGroup1)
 outputFile = outputFileDFLT
 s.write(outputFormat, outputFile)
+s.insert(0, m.metadata.Metadata())
+s.metadata.title = title
+s.metadata.composer = composer
 s.show()
 #print("type(s): "+str(type(s)))
 print("Program finished")
